@@ -228,6 +228,7 @@ const addProduct = async () => {
   const category = document.getElementById("productCategory");
   const subCategory = document.getElementById("productSubCategory");
   const price = document.getElementById("productPrice");
+  const oldPrice = document.getElementById("productOldPrice");
   const qty = document.getElementById("productQuantity");
   const id = Math.floor(Math.random() * 1000000000);
   if (
@@ -285,6 +286,7 @@ const addProduct = async () => {
             productCategory: category.value,
             productSubCategory: subCategory.value,
             productPrice: price.value,
+            productOldPrice:oldPrice.value,
             productQty: qty.value,
             productDescription: description.innerHTML,
           }).catch((error) => {
