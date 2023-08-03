@@ -1,0 +1,34 @@
+"categroty" -
+> id { category_name: "Demo" } -
+> id { category_name: "Demo 2" }
+
+
+"Products" -
+> id {
+    product_name: "demo",
+    product_image: "https image url",
+    product_description: "Description",
+    category: "Bat",
+    price: "200",
+    quantity: "20"
+}
+
+
+"orders" -
+> user_id {
+    order_date "new Date()",
+        order_Status: "pending",
+        order_products: [ {}, {}, {} ], -- - > { name_product, image, product_id, description, quantity, price }
+    order_cost: "3000",
+        name_of_user: "John doe",
+        address: "",
+        phone_number: "9876543210",
+        city: "Ghazibad",
+        email: "suboor@gmail.com"
+}
+
+user {
+    - > usre_id {
+
+    }
+}
