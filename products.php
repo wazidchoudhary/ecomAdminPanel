@@ -70,12 +70,14 @@
                             <thead class="table__header text-center">
                                 <tr class="table__header-row text-center">
                                    
-                                    <th class="d-none d-lg-table-cell"><span>ID</span>
-                                    </th>
+                                    <!-- <th class="d-none d-lg-table-cell"><span>ID</span>
+                                    </th> -->
 
                                     <th class="table__th-sort"><span class="align-middle">Product Image</span><span class="sort sort--down"></span>
                                     </th>
                                     <th class="table__th-sort"><span class="align-middle">Product Name</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort" style="width:100px !important"><span class="align-middle">Description</span><span class="sort sort--down"></span>
                                     </th>
                                     <th class="table__th-sort"><span class="align-middle">Category</span><span class="sort sort--down"></span>
                                     </th>
@@ -85,8 +87,7 @@
                                     </th>
                                     <th class="table__th-sort"><span class="align-middle">Qty</span><span class="sort sort--down"></span>
                                     </th>
-                                    <th class="table__th-sort"><span class="align-middle">Description</span><span class="sort sort--down"></span>
-                                    </th>
+                                    
                                     <th class="table__th-sort"><span class="align-middle">Action</span><span class="sort sort--down"></span></th>
                                 </tr>
                             </thead>

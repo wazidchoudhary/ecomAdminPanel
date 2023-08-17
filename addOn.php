@@ -1,3 +1,6 @@
+
+</div>
+
 <script src="js/gsap/gsap.min.js"></script>
 <script src="js/gsap/ScrollToPlugin.min.js"></script>
 <script src="js/gsap/ScrollTrigger.min.js"></script>
@@ -14,6 +17,7 @@ import {
     ref,
     set,
     get,
+    update,
     child,
     remove
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
@@ -21,7 +25,10 @@ import {
     getStorage,
     getDownloadURL,
     ref as sRef,
-    uploadBytes
+    uploadBytes,
+    deleteObject,
+    list
+    
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
 import {
     getAnalytics
@@ -49,12 +56,16 @@ window.db = getDatabase(app)
 window.set = set;
 window.ref = ref;
 window.get = get;
+window.update = update;
 window.remove = remove;
 window.child = child;
 window.getDownloadURL = getDownloadURL;
 window.sRef = sRef;
 window.uploadBytes = uploadBytes;
 window.storage = getStorage(app);
+window.deleteObject = deleteObject;
+window.list = list
+
 </script>
 
 <script src="./js/data.js"></script>

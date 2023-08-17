@@ -5,13 +5,16 @@
     <?php require './head.php' ?>
 </head>
 
-<body onload="viewCategory();fetchPriceCategory();changePricingView('singlePrice')">
+<body onload="viewCategory();fetchPriceCategory();changePricingView('singlePrice');setProductDetail();">
+
     <?php require './svg.php'; require './nav.php'; ?>
     <main class="page-content">
         <div class="container">
+
             <div class="page-header">
-                <h1 class="page-header__title">Add Product</h1>
+                <h1 class="page-header__title">Edit Product</h1>
             </div>
+
             <div class="card add-product card--content-center">
                 <div class="card__wrapper">
                     <div class="card__container">
@@ -20,7 +23,10 @@
                                 <div class="add-product__slider" id="addProductSlider">
                                     <div class="add-product__thumbs">
                                         <div class="add-product__thumbs-slider swiper-container">
+
                                         </div>
+
+
                                     </div>
                                     <div class="add-product__gallery">
                                         <div class="add-product__gallery-slider swiper-container">
@@ -28,7 +34,7 @@
                                                 <div id="showProducetImage"
                                                     class="add-product__gallery-slide swiper-slide">
                                                     <!-- <img id="showImage" /> -->
-                                                    <div id="previewContainer">
+                                                    <div id="previewContainerEdit">
 
                                                     </div>
                                                     <div id="loaderContainer">
@@ -46,7 +52,7 @@
                                             <label class="form-label">Product Image</label>
                                             <div class="input-group">
                                                 <input class="input" id="productImage" type="file" accept="image/*"
-                                                    onchange="preview(event,'Add')" multiple required>
+                                                    onchange="preview(event,'Edit')" multiple required>
                                             </div>
                                         </div>
                                         <div class="col-12 form-group form-group--lg">
@@ -131,8 +137,7 @@
                                         </div>
                                         <div id="priceList" class="col-12 form-group form-group--lg priceContent"
                                             data-option="multiplePrice">
-                                            
-                                        
+
                                         </div>
                                         <div class="col-5 form-group form-group--lg priceContent"
                                             data-option="multiplePrice">
@@ -157,7 +162,8 @@
                                         <div class="col-2 form-group form-group--lg priceContent"
                                             data-option="multiplePrice">
                                             <button type="button" class="button button--primary button--block"
-                                                onclick="addMultiplePrice()"><span class="button__text">Add</span>
+                                                id="btnAddProduct" onclick="addMultiplePrice()"><span class="button__text"
+                                                    id="loader">Add</span>
                                             </button>
                                         </div>
                                         <div class="col-12 col-md-6 form-group form-group--lg">
@@ -189,6 +195,7 @@
                                                 <input class="input" id="productSize" type="text"  placeholder="" required>
                                             </div>
                                         </div>
+
                                     </div>
 
 
@@ -198,8 +205,8 @@
 
 
                                             <button type="button" class="button button--primary button--block"
-                                                id="btnAddProduct" onclick="addProduct()"><span class="button__text"
-                                                    id="loader">Add Product</span>
+                                                id="btnAddProduct" onclick="updateProduct()"><span class="button__text"
+                                                    id="loader">Update</span>
                                             </button>
                                         </div>
                                         <div class="modal__footer-button"><a
