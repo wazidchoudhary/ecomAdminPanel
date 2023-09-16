@@ -1,3 +1,27 @@
+const knifeHandles = {
+    "CAMEL & CATTLE BONE SCALE": ["WHITE SMOOTH BONE SCALES", "DYED STABILIZED BONE SCALES", "DYED STABILIZED JIGGED BONE SCALES", "IN STAG BONE SCALES"],
+    "WATER BUFFALO HORN SCALES": ["WATER BUFFALO HORN SCALES", "WATER BUFFALO HORN DYED AND JIGGED SCALES", "WATER BUFFALO HORN BARK SCALES"],
+    "RAM'S (SHEEP) HORN SCALE": ["NATURAL HORN SCALES"],
+    "ACRYLIC SCALES": [],
+    "WOOD SCALES": [],
+    "HORN ROLLS": [],
+};
+
+const products = {
+    "GUITAR PARTS": ["BONE NUT & SADDLES", "HORN NUT & SADDLES", "BONE PICK BLANKS", "HORN PICK BLANKS", "BONE BRIDGE PIN BLANKS", "PICKS"],
+    "HAIR COMBS": ["HORN COMB", "MUSTACHE HORN COMB", "BONE COMB", "HAIR BONE NEEDLE", "WOODEN COMB"],
+    "PEN BLANKS": ["BONE PEN BLANKS", "ACRYLIC PEN BLANKS", "HORN PEN BLANKS", "WOODEN PEN BLANKS"],
+    "BONE & HORN BEADS": ["BONE BEADS", "BONE HAIR PIPE BEADS", "HORN BEADS", "HORN HAIR PIPE BEADS"],
+    "DRINKING HORN & MUG": ["DRINKING HORN", "HORN MUG"],
+    "BONE FOLDER": ["BONE FOLDER", "TEFLON BONE FOLDER", "SHOE HORN", "BULL SHOE HORN"],
+    "BULL HORN CUTLERY": ["HORN BOWL", "HORN SPOON"],
+    "BUFFALO HORN PLATES": ["BONE BUTTONS", "BONE PENDANTS", "BUFFALO HORN SPACER", "BUFFALO HORN STRIKER"],
+    JEWELLERY: ["BONE AND INLAY JEWELLERY BOX"],
+    "BONE DICE": [],
+    "WOODEN CUTLERY": [],
+    "HORN AND BONE BUTTON": [],
+};
+
 const addCategory = () => {
     const name = document.getElementById("categoryName");
     Id = Math.floor(Math.random() * 1000000000);
@@ -10,16 +34,18 @@ const addCategory = () => {
         });
         return;
     }
-    set(ref(db, "category/" + Id), {
-        categoryName: name.value,
-    }).catch((error) => {
+    let obj = {}
+    obj[name.value] = [""]
+    update(ref(db, "category/"), 
+    obj
+    ).catch((error) => {
         err = error;
     });
     if (err) {
         swal.fire({
             icon: "error",
             title: "error",
-            text: error.message,
+            text: err.message,
         });
     } else {
         swal.fire({
@@ -44,34 +70,31 @@ const addSubCategory = () => {
         return;
     }
     let err;
-    set(ref(db, "subCategory/" + categoryName.value + "/" + Id), {
-        subCategoryName: name.value,
+    
+    get(child(ref(db), `category/${categoryName.value}/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const subCategory = [...snapshot.val()]
+            if(subCategory[0] == ""){
+                subCategory[0] = name.value
+            }else{
+                subCategory.push(name.value)
+            }
+            
+            set(ref(db, "category/" + categoryName.value), subCategory)
+            .then(()=>{
+                swal.fire({
+                    icon: "success",
+                    title: "Sub-Category",
+                    text: "Added Successfully",
+                });
+                name.value = ""
+            })
+            .catch((error) => {
+                    err = error;
+            })
+             
+        }
     })
-        .catch((error) => {
-            err = error;
-        })
-        // database
-        // .ref("subCategory/" + categoryName.value + "/" + Id)
-        // .set({
-        //   subCategoryName: name.value.toUpperCase().split(' ').join('-'),
-        // })
-        .catch((error) => {
-            err = error;
-        });
-    if (err) {
-        swal.fire({
-            icon: "error",
-            title: "error",
-            text: error.message,
-        });
-    } else {
-        swal.fire({
-            icon: "success",
-            title: "Sub-Category",
-            text: "Added Successfully",
-        });
-        name.value = "";
-    }
 };
 
 const addPriceCategory = () => {
@@ -112,23 +135,19 @@ const showCategory = () => {
         if (snapshot.exists()) {
             snapshot.forEach(function (childSnapshot) {
                 var category = childSnapshot.val();
-
                 var id = childSnapshot.key;
-
                 document.getElementById("categoryShow").innerHTML +=
-                    `
-        <tr>
-        <td class="d-none d-lg-table-cell"  scope="row">` +
+                    `<tr style="border-bottom:.5px solid #000005">
+                        <td class="d-none d-lg-table-cell"  scope="row">` +
                     id +
                     `</td>
-        <td>` +
-                    category.categoryName +
+                        <td>` +
+                    category.map((cat)=> cat)+
                     `</td>
-        <td><button class="btn-delete" type="button"  onclick="onDeleteCategory('` +
+                        <td><button class="btn-delete" type="button"  onclick="onDeleteCategory('` +
                     id +
                     `')"><span class="fa fa-trash"></span></button></td>
-      </tr>
-        `;
+                    </tr>`;
             });
         }
     });
@@ -153,7 +172,7 @@ const viewSelectCategory = () => {
                     var category = childSnapshot.val();
                     var id = childSnapshot.key;
                     document.getElementById("selectProductCategory").innerHTML += `
-                    <option value="${id}"> ${category.categoryName}</option>`;
+                    <option value="${id}"> ${id}</option>`;
                 });
             } else {
                 console.log("No data available");
@@ -169,7 +188,10 @@ const fetchPriceCategory = () => {
     document.getElementById("priceCategory").innerHTML = "";
     get(child(dbRef, `priceCategory/`))
         .then((snapshot) => {
+            document.getElementById("priceCategory").innerHTML = `
+                    <option value="None">None</option>`;
             if (snapshot.exists()) {
+
                 snapshot.forEach((childSnapshot) => {
                     var category = childSnapshot.val();
                     var id = childSnapshot.key;
@@ -233,22 +255,22 @@ const viewCategory = () => {
             snapshot.forEach((childSnapshot) => {
                 var category = childSnapshot.val();
                 var id = childSnapshot.key;
-                document.getElementById("productCategory").innerHTML += `<option value="${id}">${category.categoryName}</option>`;
+                document.getElementById("productCategory").innerHTML += `<option value="${id}">${id}</option>`;
             });
         }
     });
 };
 const viewSubCategory = (category) => {
     const dbRef = ref(db);
-    get(child(dbRef, `subCategory/${category}/`)).then((snapshot) => {
+    get(child(dbRef, `category/${category}/`)).then((snapshot) => {
         if (snapshot.exists()) {
-            document.getElementById("productSubCategory").innerHTML = "";
-            snapshot.forEach((childSnapshot) => {
-                var subCategory = childSnapshot.val();
-                var id = childSnapshot.key;
-                document.getElementById("productSubCategory").innerHTML += `
-                  <option value="${subCategory.subCategoryName}">${subCategory.subCategoryName}</option>`;
-            });
+            document.getElementById("productSubCategory").innerHTML = `<option value="select">select SubCategory</option>`;
+            if (typeof snapshot.val() !== "string") {
+                snapshot.val().forEach((child) => {
+                    document.getElementById("productSubCategory").innerHTML += `
+                  <option value="${child}">${child}</option>`;
+                });
+            }
         }
     });
 };
@@ -280,7 +302,11 @@ function lowestHighestPrice(stringsArray) {
 
     return { lowest, highest };
 }
-
+const addFeatured = (id,event) =>{
+    update(ref(db, "product/" + id), {
+        featured:event.target.checked
+    })
+}
 const showProduct = () => {
     const dbRef = ref(db);
     document.getElementById("showProduct").innerHTML = "";
@@ -308,13 +334,17 @@ const showProduct = () => {
 
                 document.getElementById("showProduct").innerHTML += `
                 <tr>
+                  <td><input style="-webkit-appearance: checkbox" type="checkbox" id="vehicle1" name="vehicle1" value="Bike" onclick="addFeatured(${product.productId},event)" ${product.featured ? 'checked' : ''}></td>
                   <td><img src=${product.productImage} height="50px" width="50px" /></td>
                   <td>${product.productName}</td>
                   <td style="width:80px">${divText.substring(0, 100)}...</td>
-                  <td>${product.productCategory.category}</td>
+                  <td>${product.productCategory}</td>
                   <td>${product.productSubCategory}</td>
                   <td>${price}</td>
                   <td>${product.productQty}</td>
+                  <td>${product.productType}</td>
+                  <td>${product.productColor}</td>
+                  <td>${product.productSize}</td>
 
                   <td><button class="btn-edit" type="button"  onclick="onEditProducts('${id}')"><span class="fa fa-edit"></span></button><button class="btn-delete" type="button"  onclick="onDeleteProducts('${id}')"><span class="fa fa-trash"></span></button></td>
                 </tr>`;
@@ -374,8 +404,8 @@ const addProduct = async () => {
     const priceCategoryName = priceCategory.options[priceCategory.selectedIndex].innerHTML.trim();
 
     const id = Math.floor(Math.random() * 1000000000);
-    const category = selectCategory.options[selectCategory.selectedIndex].innerHTML.trim();
-    const categoryId = selectCategory.value;
+
+    const category = selectCategory.value;
     let productPrice = price.value;
     if (multiplePrice.length > 0) {
         productPrice = multiplePrice;
@@ -423,15 +453,15 @@ const addProduct = async () => {
                         productId: id,
                         productName: name.value,
                         productImage: imageUrlArray,
-                        productCategory: { category: category, categoryId: categoryId },
+                        productCategory: category,
                         productSubCategory: subCategory.value,
                         priceCategory: { id: priceCategory.value, name: priceCategoryName },
                         productPrice: productPrice,
                         productOldPrice: oldPrice.value,
                         productQty: qty.value,
-                        productType:type.value,
-                        productColor:color.value,
-                        productSize:size.value,
+                        productType: type.value,
+                        productColor: color.value,
+                        productSize: size.value,
                         productDescription: description.innerHTML,
                     })
                         .catch((error) => {
@@ -486,8 +516,8 @@ const updateProduct = async () => {
     const size = document.getElementById("productSize");
     const priceCategory = document.getElementById("priceCategory");
     const priceCategoryName = priceCategory.options[priceCategory.selectedIndex].innerHTML.trim();
-    const category = selectCategory.options[selectCategory.selectedIndex].innerHTML.trim();
-    const categoryId = selectCategory.value;
+
+    const category = selectCategory.value;
     let productPrice = price.value;
     if (multiplePrice.length > 0) {
         productPrice = multiplePrice;
@@ -535,15 +565,15 @@ const updateProduct = async () => {
                             update(ref(db, "product/" + productId), {
                                 productName: name.value,
                                 productImage: imageUrlArray,
-                                productCategory: { category: category, categoryId: categoryId },
+                                productCategory: category,
                                 productSubCategory: subCategory.value,
                                 priceCategory: { id: priceCategory.value, name: priceCategoryName },
                                 productPrice: productPrice,
                                 productOldPrice: oldPrice.value,
                                 productQty: qty.value,
-                                productType:type.value,
-                                productColor:color.value,
-                                productSize:size.value,
+                                productType: type.value,
+                                productColor: color.value,
+                                productSize: size.value,
                                 productDescription: description.innerHTML,
                             })
                                 .catch((error) => {
@@ -587,15 +617,15 @@ const updateProduct = async () => {
     } else {
         update(ref(db, "product/" + productId), {
             productName: name.value,
-            productCategory: { category: category, categoryId: categoryId },
+            productCategory: category,
             productSubCategory: subCategory.value,
             productPrice: productPrice,
             priceCategory: { id: priceCategory.value, name: priceCategoryName },
             productOldPrice: oldPrice.value,
             productQty: qty.value,
-            productType:type.value,
-            productColor:color.value,
-            productSize:size.value,
+            productType: type.value,
+            productColor: color.value,
+            productSize: size.value,
             productDescription: description.innerHTML,
         })
             .catch((error) => {
@@ -646,10 +676,10 @@ const setProductDetail = () => {
 
         document.getElementById("productName").value = res.productName;
         document.getElementById("productDescription").innerHTML = res.productDescription;
-        document.getElementById("productCategory").value = res.productCategory.categoryId;
-        document.getElementById("select2-productCategory-container").innerHTML = res.productCategory.category;
+        document.getElementById("productCategory").value = res.productCategory;
+        document.getElementById("select2-productCategory-container").innerHTML = res.productCategory;
 
-        viewSubCategory(res.productCategory.categoryId);
+        viewSubCategory(res.productCategory);
         setTimeout(() => {
             document.getElementById("productSubCategory").value = res.productSubCategory;
             document.getElementById("select2-productSubCategory-container").innerHTML = res.productSubCategory;
@@ -668,9 +698,9 @@ const setProductDetail = () => {
 
         document.getElementById("productOldPrice").value = res.productOldPrice;
         document.getElementById("productQuantity").value = res.productQty;
-        document.getElementById("productColor").value = res.productColor 
-        document.getElementById("productType").value = res.productType
-        document.getElementById("productSize").value = res.productSize
+        document.getElementById("productColor").value = res.productColor;
+        document.getElementById("productType").value = res.productType;
+        document.getElementById("productSize").value = res.productSize;
         document.getElementById("previewContainerEdit").innerHTML = "";
         res.productImage.forEach((url) => {
             const imgPreview = document.createElement("img");

@@ -70,9 +70,9 @@
                             <thead class="table__header">
                                 <tr class="table__header-row">
                                    
-                                    <th class="d-none d-lg-table-cell"><span>Category ID</span>
+                                    <th class="d-none d-lg-table-cell"><span>Category Name</span>
                                     </th>
-                                    <th class="table__th-sort"><span class="align-middle">Category Name</span><span class="sort sort--down"></span>
+                                    <th class="table__th-sort"><span class="align-middle">Sub-Category Name</span><span class="sort sort--down"></span>
                                     </th>
                                    
                                    
