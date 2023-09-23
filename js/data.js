@@ -392,6 +392,7 @@ const addProduct = async () => {
     const image = document.getElementById("productImage").files;
     const name = document.getElementById("productName");
     const description = document.getElementById("productDescription");
+    const mainCategory = document.getElementById("mainCategory");
     const selectCategory = document.getElementById("productCategory");
     const subCategory = document.getElementById("productSubCategory");
     const price = document.getElementById("productPrice");
@@ -412,7 +413,7 @@ const addProduct = async () => {
     } else {
         productPrice = price.value;
     }
-    if (name.value.trim() === "" || category.trim() === "" || qty.value.trim() === "") {
+    if (name.value.trim() === "" || category.trim() === "" || qty.value.trim() === "" || !productPrice) {
         swal.fire({
             icon: "error",
             title: "error",
@@ -454,6 +455,7 @@ const addProduct = async () => {
                         productName: name.value,
                         productImage: imageUrlArray,
                         productCategory: category,
+                        mainCategory:mainCategory.value,
                         productSubCategory: subCategory.value,
                         priceCategory: { id: priceCategory.value, name: priceCategoryName },
                         productPrice: productPrice,
@@ -480,6 +482,9 @@ const addProduct = async () => {
                             name.value = "";
                             price.value = "";
                             qty.value = "";
+                            color.value = "";
+                            size.value = "";
+                            type.value = "";
                             oldPrice.value = "";
                             viewCategory();
                             document.getElementsByClassName("ql-editor")[0].innerHTML = "";
@@ -507,6 +512,7 @@ const updateProduct = async () => {
     const name = document.getElementById("productName");
     const description = document.getElementById("productDescription");
     const selectCategory = document.getElementById("productCategory");
+    const mainCategory = document.getElementById("mainCategory");
     const subCategory = document.getElementById("productSubCategory");
     const price = document.getElementById("productPrice");
     const oldPrice = document.getElementById("productOldPrice");
@@ -566,6 +572,7 @@ const updateProduct = async () => {
                                 productName: name.value,
                                 productImage: imageUrlArray,
                                 productCategory: category,
+                                mainCategory:mainCategory.value,
                                 productSubCategory: subCategory.value,
                                 priceCategory: { id: priceCategory.value, name: priceCategoryName },
                                 productPrice: productPrice,
@@ -618,6 +625,7 @@ const updateProduct = async () => {
         update(ref(db, "product/" + productId), {
             productName: name.value,
             productCategory: category,
+            mainCategory:mainCategory.value,
             productSubCategory: subCategory.value,
             productPrice: productPrice,
             priceCategory: { id: priceCategory.value, name: priceCategoryName },
@@ -676,6 +684,8 @@ const setProductDetail = () => {
 
         document.getElementById("productName").value = res.productName;
         document.getElementById("productDescription").innerHTML = res.productDescription;
+        document.getElementById("mainCategory").value = res.mainCategory;
+        document.getElementById("select2-mainCategory-container").innerHTML = res.mainCategory;
         document.getElementById("productCategory").value = res.productCategory;
         document.getElementById("select2-productCategory-container").innerHTML = res.productCategory;
 

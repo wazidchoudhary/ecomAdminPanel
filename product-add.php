@@ -63,6 +63,19 @@
                                             </div>
                                         </div>
                                         <div class="col-12 form-group form-group--lg">
+                                            <label class="form-label">Main Category</label>
+                                            <div class="input-group input-group--append">
+                                                <select id="mainCategory"
+                                                    class="input js-input-select input--fluid" data-placeholder="">
+                                                <option value="knifeHandles">knifeHandles</option>
+                                                <option value="moreProducts">moreProducts</option>
+                                                </select><span class="input-group__arrow">
+                                                    <svg class="icon-icon-keyboard-down">
+                                                        <use xlink:href="#icon-keyboard-down"></use>
+                                                    </svg></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 form-group form-group--lg">
                                             <label class="form-label">Category</label>
                                             <div class="input-group input-group--append">
                                                 <select onchange="according(event)" id="productCategory"
