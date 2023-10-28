@@ -16,7 +16,7 @@ const products = {
     "BONE FOLDER": ["BONE FOLDER", "TEFLON BONE FOLDER", "SHOE HORN", "BULL SHOE HORN"],
     "BULL HORN CUTLERY": ["HORN BOWL", "HORN SPOON"],
     "BUFFALO HORN PLATES": ["BONE BUTTONS", "BONE PENDANTS", "BUFFALO HORN SPACER", "BUFFALO HORN STRIKER"],
-    JEWELLERY: ["BONE AND INLAY JEWELLERY BOX"],
+    "JEWELLERY": ["BONE AND INLAY JEWELLERY BOX"],
     "BONE DICE": [],
     "WOODEN CUTLERY": [],
     "HORN AND BONE BUTTON": [],
@@ -307,6 +307,8 @@ const addFeatured = (id,event) =>{
         featured:event.target.checked
     })
 }
+
+
 const showProduct = () => {
     const dbRef = ref(db);
     document.getElementById("showProduct").innerHTML = "";

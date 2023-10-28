@@ -5,7 +5,7 @@
         <?php require './head.php'; ?>
     </head>
 
-    <body onload="showCategory()">
+    <body onload="orderRequest()">
         <?php require './svg.php'; require './nav.php'; ?>
         <main class="page-content">
             <div class="container">
@@ -39,7 +39,8 @@
                                     <th class="table__th-sort"><span class="align-middle">Action</span><span class="sort sort--down"></span></th>
                                 </tr>
                             </thead>
-                            <tbody id="categoryShow">
+                            <tbody id="orderRequest">
+
                             </tbody>
                         </table>
                     </div>
