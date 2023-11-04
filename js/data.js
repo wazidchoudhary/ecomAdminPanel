@@ -36,8 +36,8 @@ const addCategory = () => {
     }
     let obj = {}
     obj[name.value] = [""]
-    update(ref(db, "category/"), 
-    obj
+    update(ref(db, "category/"),
+        obj
     ).catch((error) => {
         err = error;
     });
@@ -70,29 +70,29 @@ const addSubCategory = () => {
         return;
     }
     let err;
-    
+
     get(child(ref(db), `category/${categoryName.value}/`)).then((snapshot) => {
         if (snapshot.exists()) {
             const subCategory = [...snapshot.val()]
-            if(subCategory[0] == ""){
+            if (subCategory[0] == "") {
                 subCategory[0] = name.value
-            }else{
+            } else {
                 subCategory.push(name.value)
             }
-            
+
             set(ref(db, "category/" + categoryName.value), subCategory)
-            .then(()=>{
-                swal.fire({
-                    icon: "success",
-                    title: "Sub-Category",
-                    text: "Added Successfully",
-                });
-                name.value = ""
-            })
-            .catch((error) => {
+                .then(() => {
+                    swal.fire({
+                        icon: "success",
+                        title: "Sub-Category",
+                        text: "Added Successfully",
+                    });
+                    name.value = ""
+                })
+                .catch((error) => {
                     err = error;
-            })
-             
+                })
+
         }
     })
 };
@@ -142,7 +142,7 @@ const showCategory = () => {
                     id +
                     `</td>
                         <td>` +
-                    category.map((cat)=> cat)+
+                    category.map((cat) => cat) +
                     `</td>
                         <td><button class="btn-delete" type="button"  onclick="onDeleteCategory('` +
                     id +
@@ -246,6 +246,8 @@ const preview = (e, type) => {
         // mainImageSelector.appendChild(option);
     }
 };
+
+
 const viewCategory = () => {
     const dbRef = ref(db);
     document.getElementById("productCategory").innerHTML = "";
@@ -302,9 +304,38 @@ function lowestHighestPrice(stringsArray) {
 
     return { lowest, highest };
 }
-const addFeatured = (id,event) =>{
+const addFeatured = (id, event) => {
     update(ref(db, "product/" + id), {
-        featured:event.target.checked
+        featured: event.target.checked
+    })
+}
+const prodDetails = []
+const orderRequest = () => {
+    const dbRef = ref(db);
+    const orderRequest = document.getElementById("orderRequest")
+    orderRequest.innerHTML=""
+    get(child(dbRef, `orders/`)).then((snapshot) => {
+        if (snapshot.exists()) {
+
+            snapshot.forEach((el,i) => {
+                const product = el.val()
+             
+                orderRequest.innerHTML += `<tr>
+            <td scope="col">${product.shippingDetail.name}</td>
+            <td><img src=${product.products.map((el) => el.image)}></td>
+            <td>${product.products.map((el) => el.name)}<br></td>
+            <td>${product.products.map((el) => el.color)}</td>
+            <td> ${product.shippingDetail.mobile}</td>
+            <td>${product.shippingDetail.addressLine1 } ${product.shippingDetail.addressLine2}</td>
+          
+            <td>${product.shippingDetail.city} </td>
+            <td> ${product.shippingDetail.country}</td>
+            
+            <td class="text-muted">${product.orderId}</td>
+            <td><button type="button" class="btn btn-light"onclick="allProductDetails(${i})">Details</button></td>
+          </tr>`
+            })
+        }
     })
 }
 
@@ -371,10 +402,9 @@ const addMultiplePrice = () => {
         if (res) {
             document.getElementById("priceList").innerHTML += `
             <div class="col-4" style="padding:10px">${res.type} ${priceCategory.options[
-                priceCategory.selectedIndex
-            ].innerHTML.trim()}</div> <div class="col-4" style="padding:10px">$${
-                res.price
-            }</div>  <div class="col-3"> <button type="button" class="btn-delete" onclick="removeMultiplePrice('${i}')"><span class="fa fa-trash"></span></button></div>
+                    priceCategory.selectedIndex
+                ].innerHTML.trim()}</div> <div class="col-4" style="padding:10px">$${res.price
+                }</div>  <div class="col-3"> <button type="button" class="btn-delete" onclick="removeMultiplePrice('${i}')"><span class="fa fa-trash"></span></button></div>
             `;
         }
     });
@@ -457,7 +487,7 @@ const addProduct = async () => {
                         productName: name.value,
                         productImage: imageUrlArray,
                         productCategory: category,
-                        mainCategory:mainCategory.value,
+                        mainCategory: mainCategory.value,
                         productSubCategory: subCategory.value,
                         priceCategory: { id: priceCategory.value, name: priceCategoryName },
                         productPrice: productPrice,
@@ -574,7 +604,7 @@ const updateProduct = async () => {
                                 productName: name.value,
                                 productImage: imageUrlArray,
                                 productCategory: category,
-                                mainCategory:mainCategory.value,
+                                mainCategory: mainCategory.value,
                                 productSubCategory: subCategory.value,
                                 priceCategory: { id: priceCategory.value, name: priceCategoryName },
                                 productPrice: productPrice,
@@ -627,7 +657,7 @@ const updateProduct = async () => {
         update(ref(db, "product/" + productId), {
             productName: name.value,
             productCategory: category,
-            mainCategory:mainCategory.value,
+            mainCategory: mainCategory.value,
             productSubCategory: subCategory.value,
             productPrice: productPrice,
             priceCategory: { id: priceCategory.value, name: priceCategoryName },

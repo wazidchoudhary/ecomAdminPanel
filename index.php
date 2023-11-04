@@ -16,7 +16,7 @@
 
                 <div class="table-wrapper">
                     <div class="table-wrapper__content table-orders table-collapse scrollbar-thin scrollbar-visible" data-simplebar>
-                        <table class="table table--lines">
+                        <table class="table table--lines"style="width:150% !important">
                             <colgroup>
                                 <col class="colgroup-1">
                                 <col class="colgroup-2">
@@ -30,13 +30,28 @@
                             <thead class="table__header">
                                 <tr class="table__header-row">
                                    
-                                    <th class="d-none d-lg-table-cell"><span>Category ID</span>
+                                    <th class="d-none d-lg-table-cell"><span>Name</span>
                                     </th>
-                                    <th class="table__th-sort"><span class="align-middle">Category Name</span><span class="sort sort--down"></span>
+                                    <th class="table__th-sort"><span class="align-middle">Image</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort"style="width:30% !important"><span class="align-middle">Product Name</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort"style="width:30% !important"><span class="align-middle">color</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort"><span class="align-middle">Mobile no.</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort" style="width:30% !important"><span
+                                        class="align-middle">Address</span><span class="sort sort--down"></span>
+                                </th>
+                                    <th class="table__th-sort"><span class="align-middle">city</span><span class="sort sort--down"></span>
+                                    </th>
+                                    <th class="table__th-sort"><span class="align-middle">country</span><span class="sort sort--down"></span>
                                     </th>
                                    
-                                   
-                                    <th class="table__th-sort"><span class="align-middle">Action</span><span class="sort sort--down"></span></th>
+                                    <th class="table__th-sort"><span class="align-middle">Order Id</span><span class="sort sort--down"></span>
+                                </th>
+                                <th class="table__th-sort"><span class="align-middle">Action</span><span class="sort sort--down"></span>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="orderRequest">
