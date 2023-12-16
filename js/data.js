@@ -309,7 +309,54 @@ const addFeatured = (id, event) => {
         featured: event.target.checked
     })
 }
-const prodDetails = []
+
+const sendConfirmationMail = () => {
+    const orderIndex = document.getElementById('confirmationOrderId').innerHTML;
+    const amount = document.getElementById('shippingAmount').value;
+    const email = document.getElementById('shippingEmail').value;
+
+    fetch('./sendEmail.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            shippingAmount: amount,
+            orderId: orderIndex,
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        // Code to handle successful response
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Code to handle errors in the request
+    });
+};
+
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+ // Your button to open the modal
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+const openConfirmationModal = (orderIndex,email) => {
+    // Store the order index in the hidden input for later use
+    document.getElementById('confirmationOrderId').innerHTML = 'Order Id #'+orderIndex;
+    document.getElementById('shippingEmail').value = email
+    // Use jQuery to open the modal, or use your framework's method
+    console.log(email)
+    modal.style.display = "block";
+}
 const orderRequest = () => {
     const dbRef = ref(db);
     const orderRequest = document.getElementById("orderRequest")
@@ -319,20 +366,21 @@ const orderRequest = () => {
 
             snapshot.forEach((el,i) => {
                 const product = el.val()
-             
+                console.log(product)
                 orderRequest.innerHTML += `<tr>
             <td scope="col">${product.shippingDetail.name}</td>
             <td><img src=${product.products.map((el) => el.image)}></td>
             <td>${product.products.map((el) => el.name)}<br></td>
             <td>${product.products.map((el) => el.color)}</td>
             <td> ${product.shippingDetail.mobile}</td>
+            <td> ${product.shippingDetail.email}</td>
             <td>${product.shippingDetail.addressLine1 } ${product.shippingDetail.addressLine2}</td>
           
             <td>${product.shippingDetail.city} </td>
             <td> ${product.shippingDetail.country}</td>
             
             <td class="text-muted">${product.orderId}</td>
-            <td><button type="button" class="btn btn-light"onclick="allProductDetails(${i})">Details</button></td>
+            <td><button type="button" class="btn btn-primary" onclick="openConfirmationModal('${product.orderId}','${product.shippingDetail.email}')">Send Mail</button></td>
           </tr>`
             })
         }
