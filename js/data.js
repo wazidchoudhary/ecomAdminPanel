@@ -207,6 +207,34 @@ const fetchPriceCategory = () => {
         });
 };
 
+
+
+const viewMessages = () =>{
+    const dbRef = ref(db);
+    get(child(dbRef, `messages/`))
+        .then((snapshot) => {
+            document.getElementById("viewMessages").innerHTML = ``;
+            if (snapshot.exists()) {
+
+                snapshot.forEach((childSnapshot) => {
+                    var res = childSnapshot.val();
+                    var id = childSnapshot.key;
+                    document.getElementById("viewMessages").innerHTML += `
+                    <td style="width:200px !important;">${res.name}</td>
+                    <td style="width:200px !important;">${res.subject}</td>
+                    <td style="width:200px !important;">${res.email}</td>
+                    <td style="width:300px !important;">${res.message}</td>
+                    `;
+                });
+            } else {
+                console.log("No data available");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 /*-----------------------------------------------------------------------------------------------------------------*/
 
 const preview = (e, type) => {

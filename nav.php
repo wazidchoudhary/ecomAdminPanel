@@ -56,6 +56,8 @@
                         </li>
                         <li class="sidebar__menu-item"><a class="sidebar__link" href="product-add.php"><span class="fa fa-plus mr-4"></span><span class="sidebar__link-text">Add Product</span></a>
                         </li>
+                        <li class="sidebar__menu-item"><a class="sidebar__link" href="message.php"><span class="fa fa-plus mr-4"></span><span class="sidebar__link-text">Messages</span></a>
+                        </li>
  
                     </ul>
                 </nav>
